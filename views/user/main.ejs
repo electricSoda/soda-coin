@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity=
+        "sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        #warn {
+            color: white;
+            font-size: 2.5vh;
+        }
+    </style>
+    <title>SodaCoin | User</title>
+<body>
+    <div class="collection">
+        <a class="collection-item red" id='warn'>Always make sure to logout before you leave the site! Also: Do not login twice to this site.</a>
+    </div>
+
+    <% if (!user) { %>
+        <h1>An error occurred.</h1>
+    <% } else { %>
+        <ul id='userList' class="collection">
+        <% for (const key in user) { %>
+            <% if (key == "history") { %>
+                <% if (user[key].length == 0) { %>
+                    <li class="collection-item">history: you have no history.</li>
+                <% } else { %>
+                    <li class="collection-item">
+                        <details>
+                            <summary>history: </summary>
+                            <ul class="collection">
+                                <% for (let i=0; i < user[key].length; i++) { %>
+                                    <li class="collection-item"><%= JSON.stringify(user[key][i]) %></li>
+                                <% } %>
+                            </ul>
+                        </details>
+                    </li>
+                <% } %>
+                <% continue %>
+            <% } %>
+            
+            <% if (key == "password") { %>
+                <li class="collection-item">
+                    <details>
+                        <summary>password:</summary>
+                        <%= `${user[key]}`%>
+                    </details>
+                </li>
+                <% continue %>
+            <% } %>
+
+            <li class="collection-item"><%= `${key}: ${user[key]}`%></li>
+        <% } %>
+        </ul>
+    <% } %>
+    <h3>Requests</h3>
+    <ul id='requests'></ul>
+    <button id='transfer'>Transfer Money</button>
+    <button id='refresh'>Refresh</button>
+    <button id='logout'>Logout</button>
+</body>
+<script>     
+    $("#refresh").click(function () {
+        $.post("user/refresh",
+            {},
+            function (data, status) {
+                if (data.requests) {
+                    let req = data.requests
+                    let reqDoc = document.getElementById('requests')
+                    reqDoc.innerHTML = ""
+                    for (let i=0; i<req.length; i++) {
+                        reqDoc.innerHTML += `<li>From: ${req[i].from}
+                                                To: ${req[i].to}
+                                                Type: ${req[i].type}
+                                                Amount: $${req[i].value}
+                                                Timestamp: ${req[i].timestamp}
+                                                Id: ${req[i].id} 
+                                                <button onclick="accept('${req[i].id}')">Accept</button>
+                                                <button onclick="decline('${req[i].id}')">Decline</button>
+                                            </li>`
+                    }
+                }
+                let userList = document.getElementById('userList')
+                userList.innerHTML = ""
+                let user = data.user
+
+                for (const key in user) { 
+                    if (key == "history") { 
+                        if (user[key].length == 0) { 
+                            userList.innerHTML += `<li class="collection-item">history: you have no history.</li>`
+                        } else { 
+                            userList.innerHTML += `
+                            <li class="collection-item">
+                                <details>
+                                    <summary>history: </summary>
+                                    <ul id="history" class="collection"></ul>
+                                </details>
+                            </li>
+                            `
+                            for (let i=0; i < user[key].length; i++) { 
+                                let l = document.createElement('li')
+                                l.setAttribute("class", "collection-item")
+                                l.appendChild(document.createTextNode(JSON.stringify(user[key][i])))
+                                document.getElementById("history").appendChild(l)
+                            } 
+                        } 
+                        continue 
+                    } 
+                    
+                    if (key == "password") { 
+                        userList.innerHTML += `
+                        <li class="collection-item">
+                            <details>
+                                <summary>password:</summary>
+                                ${user[key]}
+                            </details>
+                        </li>
+                        `
+                        continue 
+                    } 
+
+                    userList.innerHTML += `<li class="collection-item">${key}: ${user[key]}</li>`
+                } 
+            }
+        )
+    })
+    $("#refresh").click();
+
+    function accept(id) {
+        $.post("user/accept", 
+            {id: id},
+            function(data, status) {
+                $("#refresh").click()
+            }
+        )
+    }
+    
+    function decline(id) {
+        $.post("user/decline",
+            {id: id},
+            function(data, status) {
+                $("#refresh").click()
+            }
+        )
+    }
+
+    $("#logout").click(function() {
+        $.post("user/logout",
+            {},
+            function(data, status) {
+                console.log("Successfully logged out.")
+                window.location.href='/'
+            }
+        )
+    })
+
+    $("#transfer").click(function() {
+        window.location.href="user/transfer"
+    })   
+</script>
+</html>

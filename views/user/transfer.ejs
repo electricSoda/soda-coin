@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>SodaCoin | Transfer Money</title>
+</head>
+<body>
+    <div class="container">
+        <form id='trans' method="POST" action="transfer">
+            <label for='id'>Id of user you are transferring to:</label>
+            <input type='text' name='id'>
+            <label for='amount'>Amount:</label>
+            <input name="amount" type="number" min="0.01" step="0.01" max="1000" value="0.00" />
+            <input type='submit'>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "users": [
+    {
+      "name": "electricSoda",
+      "email": "justin.hua.ge@gmail.com",
+      "password": "$2b$15$bZfR.JdRMef49sAMhjva6ONgalamb86blieAHhFCckX0Fqp4.WeNW",
+      "balance": 100000000,
+      "history": [],
+      "rank": "admin",
+      "id": "b7dad1f5-7eb3-4f5e-acfc-0f98a7eca45a"
+    },
+    {
+      "name": "dummy",
+      "email": "123@gmail.com",
+      "password": "$2b$15$8r0aQahUB/fgKXtpnGcC6uAXWn/3c4fDeYU7cViCadoEnPeUgFM2C",
+      "balance": 1,
+      "history": [],
+      "rank": "user",
+      "id": "abbed949-b3b4-442e-8094-b32d0ccb4f68"
+    }
+  ],
+  "requests": []
+}

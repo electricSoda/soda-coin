@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+          }
+        
+        footer {
+            flex: 1 0 auto;
+        }
+
+        #title {
+            padding-left: 15px;
+            padding-right: 20px;
+            font-weight: bold;
+            font-size: 5vh;
+        }
+        #title:hover {
+            cursor:pointer;
+        }
+        #login {
+            border-radius: 4px;
+            margin-bottom: 10px
+        }
+        #signup {
+            margin-left: 15px;
+        }
+        #signup:hover {
+            cursor: pointer;
+        }
+        #search {
+          color: white;
+          margin-right: 10px;
+          width: 15em;
+          padding-left: 10px;
+          background-color: rgba(0,0,0,0.12);
+          border-radius: 5px;
+        }
+    </style>
+    <title>SodaCoin</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar-fixed">
+            <a id='title'>SodaCoin</a>
+            <a class='waves-effect waves-light btn' id='login'>Login</a>
+            <a id='signup'>Sign Up</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li>
+                <form class='input-field' id='search-field' method="POST" action="/">
+                  <input type="text" id="search" placeholder="Search for anything..." autocomplete="off">
+                </form>
+              <li><a id="store">Store</a></li>
+              <li><a id="donate">Donate</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2 class='underline center-align'>
+            Welcome to SodaCoin!
+        </h1>
+        <ul class="collection">
+            <li class="collection-item center-align"><b>Server IP: deeznuts.net</b></li>
+        </ul>
+        <br>
+        <div class="slider" id="m">
+            <ul class="slides">
+              <li>
+                <div class="caption center-align">
+                  <h3>Legit. Crypto. <u>Mining.</u></h3>
+                  <h5 class="light grey-text text-lighten-3">We're turning the definition of "crypto mining" into something innovative and new.</h5>
+                  <img src="https://pcgamesn.com/wp-content/uploads/2018/12/best-minecraft-cities-1200x675.jpg" height=300>
+                </div>
+              </li>
+              <li>
+                <div class="caption left-align">
+                  <h3>Mining emeralds since 2021</h3>
+                  <h5 class="light grey-text text-lighten-3">Does that make us emerald diggers?</h5>
+                  <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/2/26/Emerald_JE3_BE3.png" height=100>
+                </div>
+              </li>
+              <li>
+                <div class="caption right-align">
+                  <h3>Trusted privacy</h3>
+                  <h5 class="light grey-text text-lighten-3">We'll make sure you don't lose any of your precious emeralds.</h5>
+                  <img src="https://www.clipartmax.com/png/middle/229-2290450_privacy-data-privacy-security-icon.png">
+                </div>
+              </li>
+            </ul>
+        </div>
+    </main>
+    <br>
+    <footer class="page-footer">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">SodaCoin</h5>
+              <p class="grey-text text-lighten-4"><b>ABOUT:</b> This cryptocurrency is one of its kind. It utilizes a <i>videogame</i> to aid and encourage users to mine for their hard-earned crypto.</p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+              <h5 class="white-text">Social Media</h5>
+              <ul>
+                <li><a class="grey-text text-lighten-3" href="#!">Youtube</a></li>
+                <li><a class="grey-text text-lighten-3" href="#!">Twitter</a></li>
+                <li><a class="grey-text text-lighten-3" href="#!">Github</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container">
+            <a class="grey-text text-lighten-4" href="#!">For business inquiries, please contact <a href="mailto: business@sodacoin.com"><u>business@sodacoin.com</u></a></a>
+            <hr>
+          © 2021-2031 Esteem Corporation. All rights reserved.
+          </div>
+        </div>
+    </footer>
+</body>
+<script>
+    document.getElementById('title').onclick = () => {
+        window.location.href="/"
+    }
+    document.getElementById('login').onclick = () => {
+        window.location.href="/user/login"
+    }
+    document.getElementById('signup').onclick = () => {
+        window.location.pathname="/user/signup"
+    }
+
+    document.getElementById('search-field').onsubmit = (e) => {
+        e.preventDefault()
+        let search = document.getElementById('search')
+        $.post("/", 
+          {"query": search.value}, 
+          (data, status) => {
+            if (data.status == 200) {
+              window.location.href=`/user/${data.id}`
+            } else {
+              window.location.href=`/404/`
+            }
+          }
+        )
+    }
+
+    window.onload = function() {
+        var elems = document.querySelectorAll('.slider')
+        var instances = M.Slider.init(elems, {
+            indicators: true,
+            interval: 4000,
+            duration: 500,
+            height: 800
+        })
+
+        var instance = M.Slider.getInstance(document.getElementById('m'))
+        instance.start();
+    }
+</script>
+</html>
