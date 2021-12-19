@@ -76,6 +76,7 @@ router.post('/', (req, res) => {
         config = require(fileName);
 
         req.session.user = user
+        console.log(`User signed up: ${req.body.username}`)
         res.render('user/main', { user: user })
     } else {
         let user = db.users.filter(user => user.name === req.body.username)[0];
