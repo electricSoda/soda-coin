@@ -35,7 +35,7 @@ router.post('/refresh', (req, res) => {
         res.render("404")
     } else {
         delete require.cache[require.resolve(fileName)]   // Deleting loaded module
-        config = require(fileName);
+        db = require(fileName);
 
         let requests = db.requests.filter(request => request.to === req.session.user.id)
         let user = db.users.filter(user => user.id === req.session.user.id)[0]
@@ -73,7 +73,7 @@ router.post('/', (req, res) => {
         });
 
         delete require.cache[require.resolve(fileName)]   // Deleting loaded module
-        config = require(fileName);
+        db = require(fileName);
 
         req.session.user = user
         console.log(`User signed up: ${req.body.username}`)
@@ -136,7 +136,7 @@ router.post("/transfer", (req, res) => {
         fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
 
         delete require.cache[require.resolve(fileName)]   // Deleting loaded module
-        config = require(fileName);
+        db = require(fileName);
 
         res.redirect('/user')
     }
@@ -176,7 +176,7 @@ router.post('/accept', (req, res) => {
         fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
 
         delete require.cache[require.resolve(fileName)]   // Deleting loaded module
-        config = require(fileName);
+        db = require(fileName);
 
         res.json({"status": 200})
     }
@@ -213,7 +213,7 @@ router.post('/decline', (req, res) => {
         fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
 
         delete require.cache[require.resolve(fileName)]   // Deleting loaded module
-        config = require(fileName);
+        db = require(fileName);
 
         res.json({"status": 200})    
     }

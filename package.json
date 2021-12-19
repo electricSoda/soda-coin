@@ -1,5 +1,5 @@
 {
-  "name": "gecoin",
+  "name": "sodacoin",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -23,5 +23,9 @@
     "ignore": [
       "*.json"
     ]
+  },
+  "engines" : { 
+    "node" : ">=20",
+    "npm": ">=10"
   }
 }
