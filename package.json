@@ -27,5 +27,12 @@
   "engines" : { 
     "node" : "16.x",
     "npm": "7.x"
+  },
+  "restart": {
+    "include": [
+      ".json$",
+      ".js$",
+      ".ejs$"
+    ]
   }
 }
