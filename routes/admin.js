@@ -7,9 +7,8 @@ const fs = require('fs')
 const fileName = "../db.json"
 let db = require(fileName)
 
-const bcrypt = require('bcrypt');
+const argon2 = require('argon2');
 const { randomUUID } = require('crypto')
-const saltRounds = 15;
 
 router.get("/", (req, res) => {
     res.render("admin/auth")
@@ -28,12 +27,12 @@ router.post("/main", (req, res) => {
         res.render('admin/auth', {username: req.body.username, password: req.body.password, error: "This user does not have admin privileges."})
     } else {
         (async () => {
-            let pass = await bcrypt.compare(req.body.password, user.password);
+            let pass = await argon2.verify(user.password, req.body.password);
             if (pass === true) {
                 console.log(user.name + ' logged in as admin')
                 res.render("admin/main", {users: users})
             } else {
-                res.render('admin/auth', {username: req.body.username, password: req.body.password, error: "Invalid Password!"})
+                res.render('/auth', {username: req.body.username, password: req.body.password, error: "Invalid Password!"})
             }
         })();  
     }

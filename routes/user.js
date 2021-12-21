@@ -12,9 +12,8 @@ const fs = require('fs')
 const fileName = "../db.json"
 let db = require(fileName)
 
-const bcrypt = require('bcrypt');
+const argon2 = require('argon2');
 const { randomUUID } = require('crypto')
-const saltRounds = 15;
 
 // User Interface
 router.get('/', (req, res) => {
@@ -51,6 +50,9 @@ router.post('/', (req, res) => {
     if (req.body.email) {
         // User signs up
         // Hash Password
+
+        const date = new Date()
+
         let id = randomUUID()
         let user = {
             "name": req.body.username, 
@@ -59,18 +61,22 @@ router.post('/', (req, res) => {
             "balance": 0,
             "history": [],
             "rank": "user",
+            "date-created": date.toLocaleString(),
             "id": id
         }
 
-        bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-            if (err) {
-                console.log(err)
-            }
-            user["password"] = hash;
-            
-            db.users.push(user)
-            fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
-        });
+        try {
+            (async () => {
+                const hash = await argon2.hash(req.body.password)
+                
+                user["password"] = hash
+
+                db.users.push(user)
+                fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
+            })()
+        } catch (err) {
+            console.log(err)
+        }
 
         delete require.cache[require.resolve(fileName)]   // Deleting loaded module
         db = require(fileName);
@@ -89,8 +95,7 @@ router.post('/', (req, res) => {
             res.render('user/login', {username: req.body.username, password: req.body.password, error: "Password can't be 0 characters!"})
         } else {
             (async () => {
-                let pass = await bcrypt.compare(req.body.password, user.password);
-                if (pass === true) {
+                if (await argon2.verify(user.password, req.body.password)) {
                     req.session.user = user
                     console.log(user.name + ' logged in')
                     res.render("user/main", { user: user })

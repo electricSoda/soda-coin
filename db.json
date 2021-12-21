@@ -3,19 +3,21 @@
     {
       "name": "electricSoda",
       "email": "justin.hua.ge@gmail.com",
-      "password": "$2b$15$bZfR.JdRMef49sAMhjva6ONgalamb86blieAHhFCckX0Fqp4.WeNW",
+      "password": "$argon2i$v=19$m=4096,t=3,p=1$Oq/8+JP54RTftwFXmmcb3Q$k8LwjAs/6YZn2q/XydNt6KC88my6Rvh0IrKG4omtkI4",
       "balance": 100000000,
       "history": [],
       "rank": "admin",
+      "date-created": "10/15/2021, 2:20:35 PM",
       "id": "b7dad1f5-7eb3-4f5e-acfc-0f98a7eca45a"
     },
     {
       "name": "dummy",
       "email": "123@gmail.com",
-      "password": "$2b$15$8r0aQahUB/fgKXtpnGcC6uAXWn/3c4fDeYU7cViCadoEnPeUgFM2C",
+      "password": "$argon2i$v=19$m=4096,t=3,p=1$8Kgp1nI43ptkSDcAmtNgVw$E7YVlBCwGLyM/csTVtsTtaC9yAwMq4533z2w0NyNCc4",
       "balance": 1,
       "history": [],
       "rank": "user",
+      "date-created": "10/15/2021, 2:20:35 PM",
       "id": "abbed949-b3b4-442e-8094-b32d0ccb4f68"
     }
   ],
